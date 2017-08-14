@@ -25,6 +25,10 @@ function start(){
   }
   if(config.checkForUpdates)
     updateNotifier({pkg}).notify();
+  if(!fs.existsSync("../screepsData/")){
+    console.log("Missing ../screepsData folder creating it now...")
+    fs.mkdirSync("../screepsData");
+  }
   api.auth(config.screeps.username,config.screeps.password).then((res)=>{
     console.log('Authenticated')
     console.log('Using stats method',config.screeps.method)
@@ -38,7 +42,7 @@ function start(){
 function beginConsoleStats(){
   api.socket.connect()
   api.socket.on('connected',()=>{
-    api.socket.subscribe('console')    
+    api.socket.subscribe('console')
   })
   api.socket.on('console',(event)=>{
     console.log(event)
@@ -52,7 +56,7 @@ function beginConsoleStats(){
 function formatStats(data){
   if (data[0] === '{') data = JSON.parse(data)
   if(typeof data == 'object')
-    return { 
+    return {
       type: 'application/json',
       stats: data
     }
@@ -100,7 +104,7 @@ function addLeaderboardData(stats){
       return stats
     });
 }
- 
+
 function tick(){
   Promise.resolve()
     .then(()=>console.log('Fetching Stats'))
@@ -128,6 +132,13 @@ function getStats(){
 function pushStats(data){
   let {type,stats} = data
   if(!stats) return console.log('No stats found, is Memory.stats defined?')
+  for(const room in stats.roomSummary) {
+    if(!fs.existsSync("../screepsData/"+room))
+      fs.appendFileSync("../screepsData/"+room, JSON.stringify(Object.keys(stats.roomSummary[room]).filter((key) => {return key!="structure_info"&&key!="room_name"&&key!="ground_resources"&&key!="creep_counts"}).map((key) => {return key}).join(",")) + "\n");
+    fs.appendFileSync("../screepsData/"+room, JSON.stringify(Object.keys(stats.roomSummary[room]).filter((key) => {return key!="structure_info"&&key!="room_name"&&key!="ground_resources"&&key!="creep_counts"}).map((key) => {return stats.roomSummary[room][key]}).join(",")) + "\n");
+    //console.log(Object.getOwnPropertyNames(stats.roomSummary[room]));
+  }
+  //console.log(JSON.stringify(stats.roomSummary,null,3))
   if(config.showRawStats) console.log('Stats:',JSON.stringify(stats,null,3))
   console.log('Pushing stats')
   let sconfig = config.service
