@@ -135,8 +135,8 @@ function pushStats(data){
   for(const room in stats.roomSummary) {
     if(stats.roomSummary[room]!=null){
       if(!fs.existsSync("../screepsData/"+room))
-        fs.appendFileSync("../screepsData/"+room, Object.keys(stats.roomSummary[room]).filter((key) => {return key!="structure_info"&&key!="room_name"&&key!="ground_resources"&&key!="creep_counts"&&key!="mineral_type"}).map((key) => {return key}).join(",") + "\n");
-      fs.appendFileSync("../screepsData/"+room, Object.keys(stats.roomSummary[room]).filter((key) => {return key!="structure_info"&&key!="room_name"&&key!="ground_resources"&&key!="creep_counts"&&key!="mineral_type"}).map((key) => {return stats.roomSummary[room][key]}).join(",") + "\n");
+        fs.appendFileSync("../screepsData/"+room, Object.keys(stats.roomSummary[room]).filter((key) => {return key!="structure_info"&&key!="room_name"&&key!="ground_resources"&&key!="creep_counts"&&key!="mineral_type"&&key!="has_storage"&&key!="has_terminal"&&key!="controller_progress"}).map((key) => {return key}).join(",") + "\n");
+      fs.appendFileSync("../screepsData/"+room, Object.keys(stats.roomSummary[room]).filter((key) => {return key!="structure_info"&&key!="room_name"&&key!="ground_resources"&&key!="creep_counts"&&key!="mineral_type"&&key!="has_storage"&&key!="has_terminal"&&key!="controller_progress"}).map((key) => {return stats.roomSummary[room][key]}).join(",") + "\n");
       //console.log(Object.getOwnPropertyNames(stats.roomSummary[room]));
     }
   }
