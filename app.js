@@ -133,10 +133,12 @@ function pushStats(data){
   let {type,stats} = data
   if(!stats) return console.log('No stats found, is Memory.stats defined?')
   for(const room in stats.roomSummary) {
-    if(!fs.existsSync("../screepsData/"+room))
-      fs.appendFileSync("../screepsData/"+room, Object.keys(stats.roomSummary[room]).filter((key) => {return key!="structure_info"&&key!="room_name"&&key!="ground_resources"&&key!="creep_counts"&&key!="mineral_type"}).map((key) => {return key}).join(",") + "\n");
-    fs.appendFileSync("../screepsData/"+room, Object.keys(stats.roomSummary[room]).filter((key) => {return key!="structure_info"&&key!="room_name"&&key!="ground_resources"&&key!="creep_counts"&&key!="mineral_type"}).map((key) => {return stats.roomSummary[room][key]}).join(",") + "\n");
-    //console.log(Object.getOwnPropertyNames(stats.roomSummary[room]));
+    if(stats.roomSummary[room]!=null){
+      if(!fs.existsSync("../screepsData/"+room))
+        fs.appendFileSync("../screepsData/"+room, Object.keys(stats.roomSummary[room]).filter((key) => {return key!="structure_info"&&key!="room_name"&&key!="ground_resources"&&key!="creep_counts"&&key!="mineral_type"}).map((key) => {return key}).join(",") + "\n");
+      fs.appendFileSync("../screepsData/"+room, Object.keys(stats.roomSummary[room]).filter((key) => {return key!="structure_info"&&key!="room_name"&&key!="ground_resources"&&key!="creep_counts"&&key!="mineral_type"}).map((key) => {return stats.roomSummary[room][key]}).join(",") + "\n");
+      //console.log(Object.getOwnPropertyNames(stats.roomSummary[room]));
+    }
   }
   //console.log(JSON.stringify(stats.roomSummary,null,3))
   if(config.showRawStats) console.log('Stats:',JSON.stringify(stats,null,3))
