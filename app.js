@@ -132,7 +132,7 @@ function getStats(){
 function pushStats(data){
   let {type,stats} = data
   if(!stats) return console.log('No stats found, is Memory.stats defined?')
-  for(const room in stats.roomSummary) {controller_safemode_cooldown
+  for(const room in stats.roomSummary) {
     if(stats.roomSummary[room]!=null){
       if(!fs.existsSync("../screepsData/"+room))
         fs.appendFileSync("../screepsData/"+room, Object.keys(stats.roomSummary[room]).filter((key) => {return key!="structure_info"&&key!="controller_safemode_cooldown"&&key!="room_name"&&key!="ground_resources"&&key!="creep_counts"&&key!="mineral_type"&&key!="has_storage"&&key!="has_terminal"&&key!="controller_progress"&&key!="controller_level"&&key!="controller_needed"&&key!="controller_safemode"&&key!="controller_safemode_avail"&&key!="energy_cap"&&key!="num_sources"&&key!="num_extractors"&&key!="storage_energy"&&key!="storage_minerals"&&key!="terminal_energy"&&key!="terminal_minerals"&&key!="num_containers"&&key!="container_energy"&&key!="num_links"&&key!="link_energy"&&key!="num_spawns"&&key!="num_source_containers"}).map((key) => {return key}).join(",") + "\n");
